@@ -36,8 +36,6 @@ module.exports = Views.Control.extend({
 
   onChange: function (e) {
 
-    Views.Control.prototype.onChange.call(this, e);
-
     var target = $(e.target);
     var checked = target.prop("checked");
 

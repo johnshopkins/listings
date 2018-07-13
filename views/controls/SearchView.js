@@ -12,8 +12,8 @@ var Views = {
 module.exports = Views.Control.extend({
 
   events: {
-    'change input[name=q]': 'onChange',
-    'keydown input[name=q]': 'onKeyDown',
+    'change input[name=keyword]': 'onChange',
+    'keydown input[name=keyword]': 'onKeyDown',
     'click .clear-button': 'clearKeyword',
     'click .submit-button': 'searchByKeyword'
   },
@@ -22,7 +22,7 @@ module.exports = Views.Control.extend({
 
     this.analytics = options.analytics;
 
-    this.input = this.$el.find('input[name=q]');
+    this.input = this.$el.find('input[name=keyword]');
     this.clearButton = this.$el.find('.clear-button');
     this.searchButton = this.$el.find('.submit-button');
 
