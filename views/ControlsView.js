@@ -1,0 +1,83 @@
+/* global require: false */
+/* global module: false */
+
+var $ = require('../shims/jquery');
+var Backbone = require('../shims/backbone');
+
+var Views = {
+  FilterSets: {
+    checkbox: require('./controls/CheckboxSetView'),
+    search: require('./controls/SearchSetView')
+  },
+  ControlsToggle: require('./ControlsToggleView')
+};
+
+module.exports = Backbone.View.extend({
+
+  initialize: function (options) {
+
+    this.analytics = options.analytics || null;
+    this.state = options.state;
+    this.render();
+
+  },
+
+  setupFormToggle: function () {
+
+    var self = this;
+
+    var toggle = new Views.ControlsToggle();
+    this.$el.prepend(toggle.render().el);
+
+    this.listenTo(toggle, 'form:display:toggle', function () {
+      self.form.toggleClass('closed');
+    });
+
+  },
+
+  renderForm: function () {
+
+    var self = this;
+
+    $.each(this.$el.find('fieldset'), function (i, group) {
+
+      group = $(group);
+      var type = group.data('filterType');
+
+      if (Views.FilterSets[type]) {
+
+        var view = new Views.FilterSets[type]({
+          analytics: self.analytics,
+          el: group
+        });
+
+        self.listenTo(view, 'filter:activate:add', function (group, slug) {
+          self.state.add(group, slug);
+        });
+
+        self.listenTo(view, 'filter:activate:replace', function (group, slug) {
+          self.state.replace(group, slug);
+        });
+
+        self.listenTo(view, 'filter:deactivate', function (group, slug) {
+          self.state.remove(group, slug);
+        });
+
+      }
+
+    });
+
+  },
+
+  render: function () {
+
+    this.form = this.$el.find('form');
+
+    this.setupFormToggle();
+    this.renderForm();
+
+    return this;
+
+  }
+
+});
