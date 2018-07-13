@@ -1,8 +1,5 @@
 {
   "name": "listings",
   "version": "0.0.0",
-  "main": "index.js",
-  "dependencies": {
-    "analytics": "git+ssh://git@github.com/johnshopkins/analytics.git#v1.0.1"
-  }
+  "main": "index.js"
 }
