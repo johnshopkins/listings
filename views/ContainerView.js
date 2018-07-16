@@ -30,7 +30,7 @@ module.exports = Backbone.View.extend({
       state: this.state
     });
 
-    this.listenTo(this.state, 'state:change', this.fetchData.bind(this));
+    this.listenTo(this.state, 'state:change', _.debounce(this.fetchData.bind(this), 200, false));
 
     this.render();
 
