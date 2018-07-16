@@ -81,10 +81,17 @@ module.exports = Backbone.View.extend({
     // if user is scrolled below the container more than the height of their window / 3
     if (documentOffset > elementOffset && belowContainer > (windowHeight / 3)) {
 
+      var speeds = {
+        slow: 1,
+        fast: 2
+      };
+
+      var speed = belowContainer / (belowContainer > 1000 ? speeds.fast : speeds.slow);
+
       // scroll the user back to the top
       $('html, body').animate({
         scrollTop: this.$el.offset().top
-      }, belowContainer);
+      }, speed);
 
     }
 
