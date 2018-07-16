@@ -5,7 +5,7 @@ var $ = require("../../shims/jquery");
 var Backbone = require("../../shims/backbone");
 
 var templates = {
-  default: require('../templates/nav-inactive.html')
+  default: require('../../templates/nav-inactive.html')
 };
 
 module.exports = Backbone.View.extend({

@@ -5,7 +5,7 @@ var $ = require('../shims/jquery');
 var Backbone = require('../shims/backbone');
 
 var templates = {
-  toggle: require('./templates/toggle.html')
+  toggle: require('../templates/toggle.html')
 };
 
 module.exports = Backbone.View.extend({

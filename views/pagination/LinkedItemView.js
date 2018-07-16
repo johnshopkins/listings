@@ -9,9 +9,9 @@ var Views = {
 };
 
 var templates = {
-  default: require('../templates/nav-active.html'),
-  next: require('../templates/nav-next.html'),
-  prev: require('../templates/nav-prev.html')
+  default: require('../../templates/nav-active.html'),
+  next: require('../../templates/nav-next.html'),
+  prev: require('../../templates/nav-prev.html')
 };
 
 module.exports = Views.Pagination.extend({
