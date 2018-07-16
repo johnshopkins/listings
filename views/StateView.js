@@ -67,7 +67,8 @@ module.exports = Backbone.View.extend({
   remove: function (group, slug) {
 
     if (!this.state[group]) {
-      console.log('the group isnt intiated... how this this trigger?');
+      // can happen when removing the 'pg' group for other state changes
+      // before the 'pg' group was even triggered
       return;
     }
 
@@ -78,7 +79,8 @@ module.exports = Backbone.View.extend({
       var i = this.state[group].indexOf(slug);
 
       if (i === -1) {
-        console.log('the slug isnt in this group... how this this trigger?');
+        // the slug isnt in this group
+        // not sure when this would happen, but made this failsafe just in case
         return;
       }
 
