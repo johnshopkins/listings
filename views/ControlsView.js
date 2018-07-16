@@ -3,6 +3,7 @@
 
 var $ = require('../shims/jquery');
 var Backbone = require('../shims/backbone');
+var Cover = require('../lib/cover');
 
 var Views = {
   FilterSets: {
@@ -16,6 +17,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function (options) {
 
+    this.cover = new Cover(this.$el);
     this.state = options.state;
     this.render();
 
@@ -66,6 +68,16 @@ module.exports = Backbone.View.extend({
 
     });
 
+  },
+
+  activate: function () {
+    this.cover.hide();
+    this.$el.removeClass('data-loading');
+  },
+
+  deactivate: function () {
+    this.cover.show();
+    this.$el.addClass('data-loading');
   },
 
   render: function () {

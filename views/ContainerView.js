@@ -2,7 +2,9 @@
 /* global module: false */
 
 var $ = require('../shims/jquery');
+var _ = require('../shims/underscore');
 var Backbone = require('../shims/backbone');
+var Cover = require('../lib/cover');
 
 var Views = {
   Items: require('./ItemsView'),
@@ -13,8 +15,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function (options) {
 
-    var self = this;
-
+    this.cover = new Cover(this.$el);
     this.state = options.state;
     this.fetcher = new options.fetcher();
 
@@ -37,6 +38,7 @@ module.exports = Backbone.View.extend({
 
   fetchData: function (state) {
 
+    this.trigger('data:loading:start');
     this.scrollUser();
 
     var data = {};
@@ -45,18 +47,13 @@ module.exports = Backbone.View.extend({
       data[key] = value.join(',');
     });
 
-    // scroll the user back to the top
-
-    // add some kind of loading graphic
-
     var self = this;
 
     this.fetcher.fetch({ data: data }).then(function () {
 
       self.items.replace(self.fetcher.get('collection'));
       self.pagination.replace(self.fetcher.get('pagination'), self.fetcher.get('activeFilters'));
-
-      // remove loading graphic
+      self.trigger('data:loading:end');
 
     });
 

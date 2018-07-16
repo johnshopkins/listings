@@ -25,12 +25,22 @@ module.exports = Backbone.View.extend({
       state: state
     });
 
-    new Views.Container({
+    var container = new Views.Container({
       el: options.container,
       fetcher: options.fetcher,
       models: options.models,
       state: state,
       views: options.views
+    });
+
+    this.listenTo(container, 'data:loading:start', function () {
+      controls.deactivate();
+      container.deactivate();
+    });
+
+    this.listenTo(container, 'data:loading:end', function () {
+      controls.activate();
+      container.activate();
     });
 
     // publish events for event tracking
