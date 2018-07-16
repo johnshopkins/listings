@@ -2,6 +2,7 @@
 
 module.exports = {
 
+  App: require('./views/App'),
   Container: require('./views/ContainerView'),
   ControlsToggle: require('./views/ControlsToggleView'),
   Controls: require('./views/ControlsView'),
