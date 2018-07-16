@@ -52,6 +52,19 @@ module.exports = Backbone.View.extend({
     return state;
   },
 
+  reset: function () {
+    
+    if (Object.keys(this.state).length === 0) {
+      // prevent multiple clicks
+      return;
+    }
+
+    this.state = {};
+    this.trigger('state:change', this.state);
+    this.setQueryString();
+
+  },
+
   add: function (group, slug) {
 
     if (!this.state[group]) {

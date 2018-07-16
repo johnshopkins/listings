@@ -15,6 +15,10 @@ var Views = {
 
 module.exports = Backbone.View.extend({
 
+  events: {
+    'reset form': 'clearFilters'
+  },
+
   initialize: function (options) {
 
     this.cover = new Cover(this.$el);
@@ -33,6 +37,12 @@ module.exports = Backbone.View.extend({
     this.listenTo(toggle, 'form:display:toggle', function () {
       self.form.toggleClass('closed');
     });
+
+  },
+
+  clearFilters: function (e) {
+
+    this.state.reset();
 
   },
 
