@@ -52,21 +52,42 @@ module.exports = Backbone.View.extend({
         self.listenTo(view, 'filter:activate:add', function (group, slug) {
           self.trigger('filter:activate:add', group, slug);
           self.state.add(group, slug);
+          self.maybeSendToPageOne(group, self.state);
         });
 
         self.listenTo(view, 'filter:activate:replace', function (group, slug) {
           self.trigger('filter:activate:replace', group, slug);
           self.state.replace(group, slug);
+          self.maybeSendToPageOne(group, self.state);
         });
 
         self.listenTo(view, 'filter:deactivate', function (group, slug) {
           self.trigger('filter:activate:deactivate', group, slug);
           self.state.remove(group, slug);
+          self.maybeSendToPageOne(group, self.state);
         });
 
       }
 
     });
+
+  },
+
+  /**
+   * Send the user back back page 1 for
+   * state changes other than navigation
+   * @param  {string} group Filter group
+   * @return null
+   */
+  maybeSendToPageOne: function (group, state) {
+
+    if (group === 'pg') {
+      return;
+    }
+
+    if (group !== 'pg') {
+      state.remove('pg');
+    }
 
   },
 
