@@ -14,6 +14,9 @@ module.exports = Backbone.View.extend({
 
   initialize: function (options) {
 
+    this.onFilterAdd = typeof options.onFilterAdd === 'function' ? options.onFilterAdd : function () {};
+    this.onFilterRemove = typeof options.onFilterRemove === 'function' ? options.onFilterRemove : function () {};
+
     var state = new Views.State();
     state.ready();
 
@@ -29,6 +32,11 @@ module.exports = Backbone.View.extend({
       state: state,
       views: options.views
     });
+
+    // publish events for event tracking
+    this.listenTo(controls, 'filter:activate:add', this.onFilterAdd);
+    this.listenTo(controls, 'filter:activate:replace', this.onFilterAdd);
+    this.listenTo(controls, 'filter:deactivate', this.onFilterRemove);
 
     this.render();
 

@@ -16,7 +16,6 @@ module.exports = Backbone.View.extend({
 
   initialize: function (options) {
 
-    this.analytics = options.analytics || null;
     this.state = options.state;
     this.render();
 
@@ -46,20 +45,20 @@ module.exports = Backbone.View.extend({
 
       if (Views.FilterSets[type]) {
 
-        var view = new Views.FilterSets[type]({
-          analytics: self.analytics,
-          el: group
-        });
+        var view = new Views.FilterSets[type]({ el: group });
 
         self.listenTo(view, 'filter:activate:add', function (group, slug) {
+          self.trigger('filter:activate:add', group, slug);
           self.state.add(group, slug);
         });
 
         self.listenTo(view, 'filter:activate:replace', function (group, slug) {
+          self.trigger('filter:activate:replace', group, slug);
           self.state.replace(group, slug);
         });
 
         self.listenTo(view, 'filter:deactivate', function (group, slug) {
+          self.trigger('filter:activate:deactivate', group, slug);
           self.state.remove(group, slug);
         });
 

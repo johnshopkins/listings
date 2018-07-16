@@ -20,8 +20,6 @@ module.exports = Views.Control.extend({
 
   initialize: function (options) {
 
-    this.analytics = options.analytics;
-
     this.input = this.$el.find('input[name=keyword]');
     this.clearButton = this.$el.find('.clear-button');
     this.searchButton = this.$el.find('.submit-button');
@@ -69,33 +67,8 @@ module.exports = Views.Control.extend({
 
     this.trigger('filter:activate:replace', encodeURIComponent(q));
 
-    // Send event to google
-    this.sendRequestToGoogle(q);
-
     this.clearButton.show();
     this.searchButton.hide();
-
-  },
-
-  sendRequestToGoogle: function (q) {
-
-    var location = window.location;
-    var path = location.pathname;
-
-    // remove trailing slash
-    if (path.substr(-1) == '/') {
-      path = path.substr(0, path.length - 1);
-    }
-
-    var url = location.protocol + '//' + location.hostname + path + '?q=' + q + '&c=program_explorer';
-
-    this.analytics.trackPageview({ page: url });
-
-    dataLayer.push({
-      'event': 'vPageView',
-      'vPath': path + '?q=' + q + '&c=program_explorer',
-      'vTitle': document.title
-    });
 
   }
 
