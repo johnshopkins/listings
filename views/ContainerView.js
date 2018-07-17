@@ -8,6 +8,7 @@ var Cover = require('../lib/cover');
 
 var Views = {
   Items: require('./ItemsView'),
+  NoResults: require('./NoResultsView'),
   Pagination: require('./PaginationView')
 };
 
@@ -30,6 +31,10 @@ module.exports = Backbone.View.extend({
       state: this.state
     });
 
+    this.noresults = new Views.NoResults({
+      el: this.$el.find('.noresults')
+    });
+
     this.listenTo(this.state, 'state:change', _.debounce(this.fetchData.bind(this), 200, false));
 
     this.render();
@@ -39,6 +44,7 @@ module.exports = Backbone.View.extend({
   fetchData: function (state) {
 
     this.trigger('data:loading:start');
+    this.noresults.hide();
     this.scrollUser();
 
     var data = {};
@@ -51,7 +57,13 @@ module.exports = Backbone.View.extend({
 
     this.fetcher.fetch({ data: data }).then(function () {
 
-      self.items.replace(self.fetcher.get('collection'));
+      var collection = self.fetcher.get('collection');
+
+      if (collection.length === 0) {
+        self.noresults.show();
+      }
+
+      self.items.replace(collection);
       self.pagination.replace(self.fetcher.get('pagination'), self.fetcher.get('activeFilters'));
       self.trigger('data:loading:end');
 
