@@ -50,8 +50,8 @@ module.exports = Views.Control.extend({
     if (val) {
       this.input.val('');
       this.trigger('filter:deactivate');
-      this.clearButton.hide();
-      this.searchButton.show();
+      this.clearButton.removeClass('show');
+      this.searchButton.addClass('show');
     }
 
   },
@@ -67,8 +67,8 @@ module.exports = Views.Control.extend({
 
     this.trigger('filter:activate:replace', encodeURIComponent(q));
 
-    this.clearButton.show();
-    this.searchButton.hide();
+    this.clearButton.addClass('show');
+    this.searchButton.removeClass('show');
 
   }
 
