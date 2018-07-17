@@ -14,7 +14,9 @@ module.exports = Views.Control.extend({
   events: {
     'change input[name=keyword]': 'onChange',
     'keydown input[name=keyword]': 'onKeyDown',
-    'click .clear-button': 'clearKeyword',
+    'focus input[name=keyword]': 'clearKeywordFromInput',
+    'focusout input[name=keyword]': 'maybeDeactivateKeyword',
+    'click .clear-button': 'deactivateKeyword',
     'click .submit-button': 'searchByKeyword'
   },
 
@@ -35,6 +37,12 @@ module.exports = Views.Control.extend({
 
     var code = e.charCode ? e.charCode : e.keyCode;
 
+    // user is typing. make sure the right buttons are showing
+    // clear button could be showing if user is editing their
+    // previous search without first removing focus from searchbox
+    this.clearButton.removeClass('show');
+    this.searchButton.addClass('show');
+
     if (code !== 13) {
       return;
     }
@@ -43,15 +51,51 @@ module.exports = Views.Control.extend({
 
   },
 
-  clearKeyword: function () {
+  /**
+   * Clear the keywor from the input,
+   * but don't deactivate the filter.
+   * @return {string} Cleared value
+   */
+  clearKeywordFromInput: function () {
 
     var val = this.input.val();
 
     if (val) {
       this.input.val('');
+      this.clearButton.removeClass('show');
+      this.searchButton.addClass('show');
+    }
+
+    return val;
+
+  },
+
+  /**
+   * After the input has lost focus, deactivate the filter
+   * if there is no value. This can happen when a user has
+   * searched for something, refocused the searchbox, but
+   * doesn't search again.
+   * @return null
+   */
+  maybeDeactivateKeyword: function () {
+
+    var val = this.input.val();
+
+    if (!val) {
+      // reset filter
       this.trigger('filter:deactivate');
       this.clearButton.removeClass('show');
       this.searchButton.addClass('show');
+    }
+
+  },
+
+  deactivateKeyword: function () {
+
+    var cleared = this.clearKeywordFromInput();
+
+    if (cleared) {
+      this.trigger('filter:deactivate');
     }
 
   },
