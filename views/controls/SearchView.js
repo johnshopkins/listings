@@ -13,7 +13,7 @@ module.exports = Views.Control.extend({
 
   events: {
     'keydown input[name=keyword]': 'onKeyDown',
-    'focus input[name=keyword]': 'clearKeywordFromInput',
+    // 'focus input[name=keyword]': 'clearKeywordFromInput',
     'focusout input[name=keyword]': 'maybeDeactivateKeyword',
     'click .clear-button': 'deactivateKeyword',
     'click .submit-button': 'searchByKeyword'
