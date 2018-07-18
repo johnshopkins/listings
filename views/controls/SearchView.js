@@ -12,7 +12,6 @@ var Views = {
 module.exports = Views.Control.extend({
 
   events: {
-    'change input[name=keyword]': 'onChange',
     'keydown input[name=keyword]': 'onKeyDown',
     'focus input[name=keyword]': 'clearKeywordFromInput',
     'focusout input[name=keyword]': 'maybeDeactivateKeyword',
@@ -22,9 +21,18 @@ module.exports = Views.Control.extend({
 
   initialize: function (options) {
 
+    Views.Control.prototype.initialize.call(this, options);
+
     this.input = this.$el.find('input[name=keyword]');
     this.clearButton = this.$el.find('.clear-button');
     this.searchButton = this.$el.find('.submit-button');
+
+    var self = this;
+
+    this.listenTo(this.state, 'state:reset', function () {
+      self.clearButton.removeClass('show');
+      self.searchButton.addClass('show');
+    });
 
   },
 

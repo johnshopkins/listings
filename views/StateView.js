@@ -53,7 +53,7 @@ module.exports = Backbone.View.extend({
   },
 
   reset: function () {
-    
+
     if (Object.keys(this.state).length === 0) {
       // prevent multiple clicks
       return;
@@ -61,6 +61,7 @@ module.exports = Backbone.View.extend({
 
     this.state = {};
     this.trigger('state:change', this.state);
+    this.trigger('state:reset');
     this.setQueryString();
 
   },
