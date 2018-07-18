@@ -11,17 +11,28 @@ var Views = {
 module.exports = Views.Control.extend({
 
   events: {
-    'change input': 'onChange',
-    'click .toggle-expand': 'toggleExpand'
+    'change > input': 'onChange',
+    'click > .toggle-expand': 'toggleExpand'
+  },
+
+  initialize: function (options) {
+
+    Views.Control.prototype.initialize.call(this, options);
+
+    this.toggleIcon = this.$el.find('.toggle-expand i');
+    this.children = this.$el.find('.child-filters');
+
   },
 
   toggleExpand: function (e) {
+
+    e.preventDefault();
 
     // toggle icon
     this.toggleIcon.toggleClass('fa-minus-square-o fa-plus-square-o');
 
     // change icon label
-    var open = this.childFilters.hasClass('open');
+    var open = this.children.hasClass('open');
     var find = open ? 'Collapse' : 'Expand';
     var replace = open ? 'Expand' : 'Collapse';
 
@@ -29,8 +40,8 @@ module.exports = Views.Control.extend({
     this.toggleIcon.attr('aria-label', label.replace(find, replace));
 
     // open child filters
-    this.childFilters.toggleClass('open');
-    this.childFilters.attr('aria-hidden', !this.childFilters.hasClass('open'));
+    this.children.toggleClass('open');
+    this.children.attr('aria-hidden', !this.children.hasClass('open'));
 
   },
 
