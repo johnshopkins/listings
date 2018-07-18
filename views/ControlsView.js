@@ -57,7 +57,10 @@ module.exports = Backbone.View.extend({
 
       if (Views.FilterSets[type]) {
 
-        var view = new Views.FilterSets[type]({ el: group });
+        var view = new Views.FilterSets[type]({
+          el: group,
+          state: self.state
+        });
 
         self.listenTo(view, 'filter:activate:add', function (group, slug) {
           self.trigger('filter:activate:add', group, slug);

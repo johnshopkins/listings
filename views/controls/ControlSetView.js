@@ -8,6 +8,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function (options) {
 
+    this.state = options.state;
     this.groupName = this.$el.data('filterGroup');
 
     this.render();
@@ -20,7 +21,10 @@ module.exports = Backbone.View.extend({
 
     $.each(this.$el.find('.filter'), function (i, filter) {
 
-      var view = new self.view({ el: $(filter) });
+      var view = new self.view({
+        el: $(filter),
+        state: self.state
+      });
 
       self.listenTo(view, 'filter:activate:add', function (filter) {
         self.trigger('filter:activate:add', self.groupName, filter);
