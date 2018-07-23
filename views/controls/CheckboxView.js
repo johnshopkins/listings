@@ -22,6 +22,11 @@ module.exports = Views.Control.extend({
     this.toggleIcon = this.$el.find('.toggle-expand i');
     this.children = this.$el.find('.child-filters');
 
+    var self = this;
+    this.listenTo(this.state, 'state:reset', function () {
+      self.$el.removeClass('active');
+    });
+
   },
 
   toggleExpand: function (e) {
@@ -52,8 +57,10 @@ module.exports = Views.Control.extend({
 
     if (checked) {
       this.trigger('filter:activate:add', target.val());
+      this.$el.addClass('active');
     } else {
       this.trigger('filter:deactivate', target.val());
+      this.$el.removeClass('active');
     }
 
   }
