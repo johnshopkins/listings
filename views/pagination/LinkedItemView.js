@@ -33,7 +33,7 @@ module.exports = Views.Pagination.extend({
 
     e.preventDefault();
 
-    var num = $(e.target).data('num');
+    var num = $(e.target).closest('a').data('num');
 
     // validate given number
     num = parseInt(num);
