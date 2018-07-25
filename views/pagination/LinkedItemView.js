@@ -17,13 +17,21 @@ var templates = {
 module.exports = Views.Pagination.extend({
 
   tagName: 'a',
-  className: 'button x-small',
+  className: '',
 
   events: {
     'click': 'onClick'
   },
 
   initialize: function (options) {
+
+    if (options.template && options.template === 'prev') {
+      this.$el.addClass('prev button x-small');
+    } else if (options.template && options.template === 'next') {
+      this.$el.addClass('next button x-small');
+    } else if (options.template && options.template === 'default') {
+      this.$el.addClass('pagination-link');
+    }
 
     this.template = options.template && templates[options.template] ? templates[options.template] : templates.default;
 
