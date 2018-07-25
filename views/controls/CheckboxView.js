@@ -11,7 +11,7 @@ var Views = {
 module.exports = Views.Control.extend({
 
   events: {
-    'change .input-label-group > input': 'onChange',
+    'change > .input-label-group input': 'onChange',
     'click > .toggle-expand': 'toggleExpand'
   },
 
