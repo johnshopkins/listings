@@ -11,6 +11,7 @@ var templates = {
 module.exports = Backbone.View.extend({
 
   tagName: 'span',
+  className: 'current',
   template: templates.default,
 
   render: function () {
