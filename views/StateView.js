@@ -161,6 +161,11 @@ module.exports = Backbone.View.extend({
 
   setQueryString: function (state) {
 
+    if (!history.pushState) {
+      // IE9 doesn't support this
+      return;
+    }
+
     // Create a URL query string by serializing the groupsState object
     var serialized = this.serializeGroupsState();
     var newQueryString = '?' + serialized;
