@@ -113,6 +113,9 @@ module.exports = Backbone.View.extend({
         defered.resolve();
       });
 
+    } else {
+      // no need to scroll, resolve deferred now
+      defered.resolve();
     }
 
     return defered;
