@@ -94,8 +94,8 @@ module.exports = Backbone.View.extend({
     if (documentOffset > elementOffset && belowContainer > (windowHeight / 3)) {
 
       var speeds = {
-        slow: 1,
-        fast: 2
+        slow: 2,
+        fast: 3
       };
 
       var speed = belowContainer / (belowContainer > 1000 ? speeds.fast : speeds.slow);
