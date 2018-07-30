@@ -45,7 +45,6 @@ module.exports = Backbone.View.extend({
 
     this.trigger('data:loading:start');
     this.noresults.hide();
-    this.scrollUser();
 
     var data = {};
 
@@ -53,9 +52,13 @@ module.exports = Backbone.View.extend({
       data[key] = value.join(',');
     });
 
-    var self = this;
+    var deferreds = [
+      this.scrollUser(),
+      this.fetcher.fetch({ data: data })
+    ];
 
-    this.fetcher.fetch({ data: data }).then(function () {
+    var self = this;
+    $.when.apply($, deferreds).done(function() {
 
       var collection = self.fetcher.get('collection');
 
@@ -78,6 +81,8 @@ module.exports = Backbone.View.extend({
    */
   scrollUser: function () {
 
+    var defered = $.Deferred();
+
     // how far the user is scrolled
     var documentOffset = $(document).scrollTop();
 
@@ -94,8 +99,8 @@ module.exports = Backbone.View.extend({
     if (documentOffset > elementOffset && belowContainer > (windowHeight / 3)) {
 
       var speeds = {
-        slow: 3,
-        fast: 4
+        slow: 2,
+        fast: 3
       };
 
       var speed = belowContainer / (belowContainer > 1000 ? speeds.fast : speeds.slow);
@@ -103,9 +108,14 @@ module.exports = Backbone.View.extend({
       // scroll the user back to the top
       $('html, body').animate({
         scrollTop: this.$el.offset().top
-      }, speed);
+      }, speed, 'swing', function () {
+        // note: this callback will fire twice due to being called on two elements
+        defered.resolve();
+      });
 
     }
+
+    return defered;
 
   },
 
