@@ -8,6 +8,7 @@ var Cover = require('../lib/cover');
 var Views = {
   FilterSets: {
     checkbox: require('./controls/CheckboxSetView'),
+    daterange: require('./controls/DateRangeSetView'),
     search: require('./controls/SearchSetView')
   },
   ControlsToggle: require('./ControlsToggleView')
