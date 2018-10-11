@@ -4,6 +4,7 @@
 
 var $ = require('../../shims/jquery');
 var Backbone = require('../../shims/backbone');
+require('../../lib/jquery.rangepicker.js');
 
 var Views = {
   Control: require('./ControlView')
@@ -12,34 +13,43 @@ var Views = {
 module.exports = Views.Control.extend({
 
   events: {
-    'change > input': 'onChange'
+    'change > input': 'onChange',
+    'click .clear': 'deactivate'
   },
 
   initialize: function (options) {
 
     Views.Control.prototype.initialize.call(this, options);
 
-    var self = this;
-    this.listenTo(this.state, 'state:reset', function () {
-      console.log('need to clear date range filter');
-      // self.$el.removeClass('active');
-    });
+    this.$el.find('input').rangepicker();
+
+    this.listenTo(this.state, 'state:reset', this.deactivate.bind(this));
+
+  },
+
+  deactivate: function () {
+
+    this.trigger('filter:deactivate', this.activeFilter);
+    this.$el.find('input').val('');
+    this.$el.removeClass('active');
 
   },
 
   onChange: function (e) {
 
     var target = $(e.target);
-    var filter = target.val();
+    var filter = target.val()
+      .replace(/\s*-\s*/g, ',')
+      .replace(/\//g, '-');
 
     if (filter) {
-      this.trigger('filter:activate:add', filter);
+      this.trigger('filter:activate:replace', filter);
       this.activeFilter = filter;
-      console.log('activate date range: ' + this.activeFilter);
-    } else if (this.activeFilte) {
-      console.log('deactivate date range: ' + this.activeFilter);
+      this.$el.addClass('active');
+    } else if (this.activeFilter) {
       this.trigger('filter:deactivate', this.activeFilter);
       this.activeFilter = null;
+      this.$el.removeClass('active');
     }
 
   }
