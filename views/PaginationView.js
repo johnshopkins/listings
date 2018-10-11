@@ -82,6 +82,9 @@ module.exports = Backbone.View.extend({
       view.remove();
     });
 
+    if (!pagination) {
+      return;
+    }
 
     // add new ones
 

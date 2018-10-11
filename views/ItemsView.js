@@ -49,6 +49,9 @@ module.exports = Backbone.View.extend({
       view.remove();
     });
 
+    if (!collection) {
+      return;
+    }
 
     // add new ones
 

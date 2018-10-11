@@ -7,6 +7,7 @@ var Backbone = require('../shims/backbone');
 var Cover = require('../lib/cover');
 
 var Views = {
+  Error: require('./ErrorView'),
   Items: require('./ItemsView'),
   NoResults: require('./NoResultsView'),
   Pagination: require('./PaginationView')
@@ -35,6 +36,10 @@ module.exports = Backbone.View.extend({
       el: this.$el.find('.noresults')
     });
 
+    this.error = new Views.Error({
+      el: this.$el.find('.error')
+    });
+
     this.listenTo(this.state, 'state:change', _.debounce(this.fetchData.bind(this), 200, false));
 
     this.render();
@@ -45,6 +50,7 @@ module.exports = Backbone.View.extend({
 
     this.trigger('data:loading:start');
     this.noresults.hide();
+    this.error.hide();
 
     var data = {};
 
@@ -58,19 +64,30 @@ module.exports = Backbone.View.extend({
     ];
 
     var self = this;
-    $.when.apply($, deferreds).done(function() {
+    $.when.apply($, deferreds)
+      .done(function() {
+        
+        if (self.fetcher.get('error')) {
 
-      var collection = self.fetcher.get('collection');
+          self.error.show();
+          self.items.replace();
+          self.pagination.replace();
 
-      if (collection.length === 0) {
-        self.noresults.show();
-      }
+        } else {
 
-      self.items.replace(collection);
-      self.pagination.replace(self.fetcher.get('pagination'), self.fetcher.get('activeFilters'));
-      self.trigger('data:loading:end');
+          let collection = self.fetcher.get('collection');
 
-    });
+          if (collection.length === 0) {
+            self.noresults.show();
+          }
+
+          self.items.replace(collection);
+          self.pagination.replace(self.fetcher.get('pagination'), self.fetcher.get('activeFilters'));
+        }
+
+        self.trigger('data:loading:end');
+
+      });
 
   },
 
