@@ -75,7 +75,7 @@ module.exports = Backbone.View.extend({
 
         } else {
 
-          let collection = self.fetcher.get('collection');
+          var collection = self.fetcher.get('collection');
 
           if (collection.length === 0) {
             self.noresults.show();
