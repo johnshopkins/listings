@@ -26,16 +26,16 @@ module.exports = Backbone.View.extend({
         state: self.state
       });
 
-      self.listenTo(view, 'filter:activate:add', function (filter) {
-        self.trigger('filter:activate:add', self.groupName, filter);
+      self.listenTo(view, 'filter:activate:add', function (slug) {
+        self.trigger('filter:activate:add', self.groupName, slug);
       });
 
-      self.listenTo(view, 'filter:activate:replace', function (filter) {
-        self.trigger('filter:activate:replace', self.groupName, filter);
+      self.listenTo(view, 'filter:activate:replace', function (slug) {
+        self.trigger('filter:activate:replace', self.groupName, slug);
       });
 
-      self.listenTo(view, 'filter:deactivate', function (filter) {
-        self.trigger('filter:deactivate', self.groupName, filter);
+      self.listenTo(view, 'filter:deactivate', function (slug) {
+        self.trigger('filter:deactivate', self.groupName, slug);
       });
 
     });

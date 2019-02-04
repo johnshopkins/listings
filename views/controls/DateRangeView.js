@@ -38,13 +38,13 @@ module.exports = Views.Control.extend({
   onChange: function (e) {
 
     var target = $(e.target);
-    var filter = target.val()
+    var slug = target.val()
       .replace(/\s*-\s*/g, ',')
       .replace(/\//g, '-');
 
-    if (filter) {
-      this.trigger('filter:activate:replace', filter);
-      this.activeFilter = filter;
+    if (slug) {
+      this.trigger('filter:activate:replace', slug);
+      this.activeFilter = slug;
       this.$el.addClass('active');
     } else if (this.activeFilter) {
       this.trigger('filter:deactivate', this.activeFilter);

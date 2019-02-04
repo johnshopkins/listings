@@ -54,12 +54,13 @@ module.exports = Views.Control.extend({
 
     var target = $(e.target);
     var checked = target.prop("checked");
+    var slug = target.val();
 
     if (checked) {
-      this.trigger('filter:activate:add', target.val());
+      this.trigger('filter:activate:add', slug);
       this.$el.addClass('active');
     } else {
-      this.trigger('filter:deactivate', target.val());
+      this.trigger('filter:deactivate', slug);
       this.$el.removeClass('active');
     }
 

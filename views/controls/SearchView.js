@@ -117,7 +117,8 @@ module.exports = Views.Control.extend({
 
     if (!q) return;
 
-    this.trigger('filter:activate:replace', encodeURIComponent(q));
+    var slug = encodeURIComponent(q);
+    this.trigger('filter:activate:replace', slug);
 
     this.clearButton.addClass('show');
     this.searchButton.removeClass('show');
