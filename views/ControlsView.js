@@ -76,7 +76,7 @@ module.exports = Backbone.View.extend({
         });
 
         self.listenTo(view, 'filter:deactivate', function (group, slug) {
-          self.trigger('filter:activate:deactivate', group, slug);
+          self.trigger('filter:deactivate', group, slug);
           self.state.remove(group, slug);
           self.maybeSendToPageOne(group, self.state);
         });
