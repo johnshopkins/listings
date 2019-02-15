@@ -10,7 +10,6 @@ module.exports = Views.Control.extend({
 
   events: {
     'keydown input[name=keyword]': 'onKeyDown',
-    // 'focus input[name=keyword]': 'clearKeywordFromInput',
     'focusout input[name=keyword]': 'maybeDeactivateKeyword',
     'click .clear-button': 'deactivateKeyword',
     'click .submit-button': 'searchByKeyword'
@@ -23,6 +22,9 @@ module.exports = Views.Control.extend({
     this.input = this.$el.find('input[name=keyword]');
     this.clearButton = this.$el.find('.clear-button');
     this.searchButton = this.$el.find('.submit-button');
+
+    this.listenTo(this.state, 'state:filter:replace:' + this.group, this.activateFilter);
+    this.listenTo(this.state, 'state:filter:remove:' + this.group, this.deactivateFilter);
 
   },
 
@@ -50,7 +52,7 @@ module.exports = Views.Control.extend({
   },
 
   /**
-   * Clear the keywor from the input,
+   * Clear the keyword from the input,
    * but don't deactivate the filter.
    * @return {string} Cleared value
    */
@@ -60,8 +62,7 @@ module.exports = Views.Control.extend({
 
     if (val) {
       this.input.val('');
-      this.clearButton.removeClass('show');
-      this.searchButton.addClass('show');
+      this.deactivateFilter()
     }
 
     return val;
@@ -80,10 +81,7 @@ module.exports = Views.Control.extend({
     var val = this.input.val();
 
     if (!val) {
-      // reset filter
       this.state.remove(this.group);
-      this.clearButton.removeClass('show');
-      this.searchButton.addClass('show');
     }
 
   },
@@ -107,7 +105,11 @@ module.exports = Views.Control.extend({
 
     if (!q) return;
 
-    this.state.replace(this.group, encodeURIComponent(q));
+    this.keyword = encodeURIComponent(q);
+    this.state.replace(this.group, this.keyword);
+  },
+
+  activateFilter: function () {
 
     this.clearButton.addClass('show');
     this.searchButton.removeClass('show');
@@ -115,8 +117,11 @@ module.exports = Views.Control.extend({
   },
 
   deactivateFilter: function () {
+
+    this.keyword = null;
     this.clearButton.removeClass('show');
     this.searchButton.addClass('show');
+
   }
 
 });

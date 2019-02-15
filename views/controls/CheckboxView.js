@@ -18,6 +18,11 @@ module.exports = Views.Control.extend({
 
     Views.Control.prototype.initialize.call(this, options);
 
+    this.value = this.$el.find('> .input-label-group input').val();
+
+    this.listenTo(this.state, 'state:filter:add:' + this.group + ':' + this.slug, this.activateFilter);
+    this.listenTo(this.state, 'state:filter:remove:' + this.group + ':' + this.slug, this.deactivateFilter);
+
     this.toggleIcon = this.$el.find('.toggle-expand i');
     this.children = this.$el.find('.child-filters');
 
@@ -46,21 +51,24 @@ module.exports = Views.Control.extend({
 
   onChange: function (e) {
 
-    var target = $(e.target);
-    var checked = target.prop("checked");
-
-    if (checked) {
-      this.state.add(this.group, target.val());
-      this.$el.addClass('active');
+    if ($(e.target).prop("checked")) {
+      this.state.add(this.group, this.value);
     } else {
-      this.state.remove(this.group, target.val());
-      this.deactivateFilter();
+      this.state.remove(this.group, this.value);
     }
 
   },
 
+  activateFilter: function () {
+
+    this.$el.addClass('active');
+
+  },
+
   deactivateFilter: function () {
+
     this.$el.removeClass('active');
+
   }
 
 });

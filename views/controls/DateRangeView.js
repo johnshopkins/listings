@@ -20,16 +20,10 @@ module.exports = Views.Control.extend({
 
     Views.Control.prototype.initialize.call(this, options);
 
+    this.listenTo(this.state, 'state:filter:replace:' + this.group + ':' + this.activeFilter, this.activateFilter);
+    this.listenTo(this.state, 'state:filter:remove:' + this.group, this.deactivateFilter);
+
     this.$el.find('input').rangepicker();
-
-  },
-
-  deactivateFilter: function () {
-
-    this.state.remove(this.group, this.activeFilter);
-    this.$el.find('input').val('');
-    this.$el.removeClass('active');
-    this.activeFilter = null;
 
   },
 
@@ -41,13 +35,27 @@ module.exports = Views.Control.extend({
       .replace(/\//g, '-');
 
     if (filter) {
-      this.state.replace(this.group, filter);
       this.activeFilter = filter;
-      this.$el.addClass('active');
+      this.state.replace(this.group, filter);
     } else if (this.activeFilter) {
       this.deactivateFilter();
     }
 
-  }
+  },
+
+  activateFilter() {
+
+    this.$el.addClass('active');
+
+  },
+
+  deactivateFilter: function () {
+
+    this.state.remove(this.group);
+    this.$el.find('input').val('');
+    this.$el.removeClass('active');
+    this.activeFilter = null;
+
+  },
 
 });
