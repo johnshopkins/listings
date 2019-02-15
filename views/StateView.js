@@ -5,7 +5,7 @@ var Backbone = require("../shims/backbone");
 
 module.exports = Backbone.View.extend({
 
-  initialize: function (options) {
+  initialize: function () {
 
     this.state = {};
 
@@ -33,9 +33,8 @@ module.exports = Backbone.View.extend({
     if (!querystring) return {};
 
     var state = {};
-    var groups = [];
 
-    groups = querystring.split("&");
+    var groups = querystring.split("&");
 
     groups.forEach(function(group) {
       var pair = group.split("=");
