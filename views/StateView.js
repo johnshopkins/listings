@@ -17,11 +17,11 @@ module.exports = Backbone.View.extend({
 
   },
 
-  getState: function () {
-
-    return this.state;
-
-  },
+  // getState: function () {
+  //
+  //   return this.state;
+  //
+  // },
 
   /**
    * Deserializes a query string (if present) into in an object.
