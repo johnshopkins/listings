@@ -24,8 +24,6 @@ module.exports = Views.Control.extend({
     this.clearButton = this.$el.find('.clear-button');
     this.searchButton = this.$el.find('.submit-button');
 
-    this.listenTo(this.state, 'state:reset', this.deactivateFilter);
-
   },
 
   /**

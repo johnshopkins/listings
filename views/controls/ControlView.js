@@ -10,6 +10,12 @@ module.exports = Backbone.View.extend({
     this.group = options.group;
     this.state = options.state;
 
+    this.listenTo(this.state, 'state:reset', this.deactivateFilter);
+
+  },
+
+  deactivateFilter: function () {
+
   }
 
 });

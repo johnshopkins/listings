@@ -22,8 +22,6 @@ module.exports = Views.Control.extend({
 
     this.$el.find('input').rangepicker();
 
-    this.listenTo(this.state, 'state:reset', this.deactivateFilter.bind(this));
-
   },
 
   deactivateFilter: function () {

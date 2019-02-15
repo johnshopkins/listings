@@ -21,8 +21,6 @@ module.exports = Views.Control.extend({
     this.toggleIcon = this.$el.find('.toggle-expand i');
     this.children = this.$el.find('.child-filters');
 
-    this.listenTo(this.state, 'state:reset', this.deactivateFilter);
-
   },
 
   toggleExpand: function (e) {
