@@ -72,6 +72,7 @@ module.exports = Backbone.View.extend({
 
     this.state[group].push(slug);
     this.trigger('state:change', this.state);
+    this.trigger('state:filter:add', group, slug);
     this.setQueryString();
 
   },
@@ -110,6 +111,7 @@ module.exports = Backbone.View.extend({
     }
 
     this.trigger('state:change', this.state);
+    this.trigger('state:filter:remove', group, slug);
     this.setQueryString();
 
   },
@@ -119,6 +121,7 @@ module.exports = Backbone.View.extend({
     this.state[group] = [slug];
 
     this.trigger('state:change', this.state);
+    this.trigger('state:filter:replace', group, slug);
     this.setQueryString();
 
   },

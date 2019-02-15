@@ -7,6 +7,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function (options) {
 
+    this.group = options.group;
     this.state = options.state;
 
   }

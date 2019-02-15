@@ -83,7 +83,7 @@ module.exports = Views.Control.extend({
 
     if (!val) {
       // reset filter
-      this.trigger('filter:deactivate');
+      this.state.remove(this.group);
       this.clearButton.removeClass('show');
       this.searchButton.addClass('show');
     }
@@ -95,7 +95,7 @@ module.exports = Views.Control.extend({
     var cleared = this.clearKeywordFromInput();
 
     if (cleared) {
-      this.trigger('filter:deactivate');
+      this.state.remove(this.group);
     }
 
   },
@@ -109,8 +109,7 @@ module.exports = Views.Control.extend({
 
     if (!q) return;
 
-    var slug = encodeURIComponent(q);
-    this.trigger('filter:activate:replace', slug);
+    this.state.replace(this.group, encodeURIComponent(q));
 
     this.clearButton.addClass('show');
     this.searchButton.removeClass('show');

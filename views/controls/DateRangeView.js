@@ -3,7 +3,6 @@
 /* global dataLayer: false */
 
 var $ = require('../../shims/jquery');
-var Backbone = require('../../shims/backbone');
 require('../../lib/jquery.rangepicker.js');
 
 var Views = {
@@ -29,27 +28,26 @@ module.exports = Views.Control.extend({
 
   deactivateFilter: function () {
 
-    this.trigger('filter:deactivate', this.activeFilter);
+    this.state.remove(this.group, this.activeFilter);
     this.$el.find('input').val('');
     this.$el.removeClass('active');
+    this.activeFilter = null;
 
   },
 
   onChange: function (e) {
 
     var target = $(e.target);
-    var slug = target.val()
+    var filter = target.val()
       .replace(/\s*-\s*/g, ',')
       .replace(/\//g, '-');
 
-    if (slug) {
-      this.trigger('filter:activate:replace', slug);
-      this.activeFilter = slug;
+    if (filter) {
+      this.state.replace(this.group, filter);
+      this.activeFilter = filter;
       this.$el.addClass('active');
     } else if (this.activeFilter) {
-      this.trigger('filter:deactivate', this.activeFilter);
-      this.activeFilter = null;
-      this.$el.removeClass('active');
+      this.deactivateFilter();
     }
 
   }
