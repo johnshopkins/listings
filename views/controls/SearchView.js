@@ -27,12 +27,7 @@ module.exports = Views.Control.extend({
     this.clearButton = this.$el.find('.clear-button');
     this.searchButton = this.$el.find('.submit-button');
 
-    var self = this;
-
-    this.listenTo(this.state, 'state:reset', function () {
-      self.clearButton.removeClass('show');
-      self.searchButton.addClass('show');
-    });
+    this.listenTo(this.state, 'state:reset', this.deactivateFilter);
 
   },
 
@@ -123,6 +118,11 @@ module.exports = Views.Control.extend({
     this.clearButton.addClass('show');
     this.searchButton.removeClass('show');
 
+  },
+
+  deactivateFilter: function () {
+    this.clearButton.removeClass('show');
+    this.searchButton.addClass('show');
   }
 
 });
