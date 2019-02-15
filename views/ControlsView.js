@@ -93,14 +93,10 @@ module.exports = Backbone.View.extend({
    * @param  {string} group Filter group
    * @return null
    */
-  maybeSendToPageOne: function (group, state) {
-
-    if (group === 'pg') {
-      return;
-    }
+  maybeSendToPageOne: function (group) {
 
     if (group !== 'pg') {
-      state.remove('pg');
+      this.state.remove('pg');
     }
 
   },
