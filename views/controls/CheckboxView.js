@@ -2,7 +2,6 @@
 /* global module: false */
 
 var $ = require('../../shims/jquery');
-var Backbone = require('../../shims/backbone');
 
 var Views = {
   Control: require('./ControlView')
