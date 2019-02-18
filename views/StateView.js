@@ -17,12 +17,6 @@ module.exports = Backbone.View.extend({
 
   },
 
-  // getState: function () {
-  //
-  //   return this.state;
-  //
-  // },
-
   /**
    * Deserializes a query string (if present) into in an object.
    * @return {object|null}
@@ -114,7 +108,11 @@ module.exports = Backbone.View.extend({
 
     this.trigger('state:change', this.state);
     this.trigger('state:filter:remove', group, slug);
-    this.trigger('state:filter:remove:' + slug ? group + ':' + slug : group);
+    this.trigger('state:filter:remove:' + group, group, slug);
+    if (slug) {
+      this.trigger('state:filter:remove:' + group + ':' + slug);
+    }
+
     this.setQueryString();
 
   },
@@ -125,7 +123,7 @@ module.exports = Backbone.View.extend({
 
     this.trigger('state:change', this.state);
     this.trigger('state:filter:replace', group, slug);
-    this.trigger('state:filter:replace:' + group);
+    this.trigger('state:filter:replace:' + group, group, slug);
     this.setQueryString();
 
   },

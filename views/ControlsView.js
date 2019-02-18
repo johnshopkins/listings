@@ -6,6 +6,7 @@ var Backbone = require('../shims/backbone');
 var Cover = require('../lib/cover');
 
 var Views = {
+  ActiveFilters: require('./active-filters/ActiveFiltersView'),
   FilterSets: {
     checkbox: require('./controls/CheckboxSetView'),
     daterange: require('./controls/DateRangeSetView'),
@@ -49,6 +50,7 @@ module.exports = Backbone.View.extend({
   clearFilters: function (e) {
 
     this.state.reset();
+    this.activeFilters.removeAll();
 
   },
 
@@ -71,6 +73,13 @@ module.exports = Backbone.View.extend({
       }
 
     });
+
+  },
+
+  renderActiveFilters: function () {
+
+    this.activeFilters = new Views.ActiveFilters({ state: this.state });
+    this.$el.prepend(this.activeFilters.render().el);
 
   },
 
@@ -103,6 +112,7 @@ module.exports = Backbone.View.extend({
     this.form = this.$el.find('form');
 
     this.setupFormToggle();
+    this.renderActiveFilters();
     this.renderForm();
 
     return this;

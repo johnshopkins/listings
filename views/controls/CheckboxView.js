@@ -68,6 +68,11 @@ module.exports = Views.Control.extend({
 
   deactivateFilter: function () {
 
+    if (this.input.prop("checked")) {
+      // triggered from active filters
+      this.input.prop('checked', false);
+    }
+
     this.$el.removeClass('active');
 
   }
