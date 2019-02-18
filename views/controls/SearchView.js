@@ -61,7 +61,6 @@ module.exports = Views.Control.extend({
     var val = this.input.val();
 
     if (val) {
-      this.input.val('');
       this.deactivateFilter()
     }
 
@@ -119,6 +118,7 @@ module.exports = Views.Control.extend({
   deactivateFilter: function () {
 
     this.keyword = null;
+    this.input.val('');
     this.clearButton.removeClass('show');
     this.searchButton.addClass('show');
 
