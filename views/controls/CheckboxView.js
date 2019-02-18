@@ -2,7 +2,6 @@
 /* global module: false */
 
 var $ = require('../../shims/jquery');
-var Backbone = require('../../shims/backbone');
 
 var Views = {
   Control: require('./ControlView')
@@ -19,13 +18,14 @@ module.exports = Views.Control.extend({
 
     Views.Control.prototype.initialize.call(this, options);
 
+    this.input = this.$el.find('> .input-label-group input');
+    this.value = this.input.val();
+
+    this.listenTo(this.state, 'state:filter:add:' + this.group + ':' + this.value, this.activateFilter);
+    this.listenTo(this.state, 'state:filter:remove:' + this.group + ':' + this.value, this.deactivateFilter);
+
     this.toggleIcon = this.$el.find('.toggle-expand i');
     this.children = this.$el.find('.child-filters');
-
-    var self = this;
-    this.listenTo(this.state, 'state:reset', function () {
-      self.$el.removeClass('active');
-    });
 
   },
 
@@ -52,16 +52,28 @@ module.exports = Views.Control.extend({
 
   onChange: function (e) {
 
-    var target = $(e.target);
-    var checked = target.prop("checked");
-
-    if (checked) {
-      this.trigger('filter:activate:add', target.val());
-      this.$el.addClass('active');
+    if (this.input.prop("checked")) {
+      this.state.add(this.group, this.value);
     } else {
-      this.trigger('filter:deactivate', target.val());
-      this.$el.removeClass('active');
+      this.state.remove(this.group, this.value);
     }
+
+  },
+
+  activateFilter: function () {
+
+    this.$el.addClass('active');
+
+  },
+
+  deactivateFilter: function () {
+
+    if (this.input.prop("checked")) {
+      // triggered from active filters
+      this.input.prop('checked', false);
+    }
+
+    this.$el.removeClass('active');
 
   }
 

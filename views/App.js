@@ -44,9 +44,9 @@ module.exports = Backbone.View.extend({
     });
 
     // publish events for event tracking
-    this.listenTo(controls, 'filter:activate:add', this.onFilterAdd);
-    this.listenTo(controls, 'filter:activate:replace', this.onFilterAdd);
-    this.listenTo(controls, 'filter:deactivate', this.onFilterRemove);
+    this.listenTo(state, 'state:filter:add', this.onFilterAdd);
+    this.listenTo(state, 'state:filter:replace', this.onFilterAdd);
+    this.listenTo(state, 'state:filter:remove', this.onFilterRemove);
 
     this.render();
 

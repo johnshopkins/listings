@@ -2,9 +2,6 @@
 /* global module: false */
 /* global dataLayer: false */
 
-var $ = require('../../shims/jquery');
-var Backbone = require('../../shims/backbone');
-
 var Views = {
   Control: require('./ControlView')
 };
@@ -13,7 +10,6 @@ module.exports = Views.Control.extend({
 
   events: {
     'keydown input[name=keyword]': 'onKeyDown',
-    // 'focus input[name=keyword]': 'clearKeywordFromInput',
     'focusout input[name=keyword]': 'maybeDeactivateKeyword',
     'click .clear-button': 'deactivateKeyword',
     'click .submit-button': 'searchByKeyword'
@@ -27,12 +23,8 @@ module.exports = Views.Control.extend({
     this.clearButton = this.$el.find('.clear-button');
     this.searchButton = this.$el.find('.submit-button');
 
-    var self = this;
-
-    this.listenTo(this.state, 'state:reset', function () {
-      self.clearButton.removeClass('show');
-      self.searchButton.addClass('show');
-    });
+    this.listenTo(this.state, 'state:filter:replace:' + this.group, this.activateFilter);
+    this.listenTo(this.state, 'state:filter:remove:' + this.group, this.deactivateFilter);
 
   },
 
@@ -60,7 +52,7 @@ module.exports = Views.Control.extend({
   },
 
   /**
-   * Clear the keywor from the input,
+   * Clear the keyword from the input,
    * but don't deactivate the filter.
    * @return {string} Cleared value
    */
@@ -69,9 +61,7 @@ module.exports = Views.Control.extend({
     var val = this.input.val();
 
     if (val) {
-      this.input.val('');
-      this.clearButton.removeClass('show');
-      this.searchButton.addClass('show');
+      this.deactivateFilter()
     }
 
     return val;
@@ -90,10 +80,7 @@ module.exports = Views.Control.extend({
     var val = this.input.val();
 
     if (!val) {
-      // reset filter
-      this.trigger('filter:deactivate');
-      this.clearButton.removeClass('show');
-      this.searchButton.addClass('show');
+      this.state.remove(this.group);
     }
 
   },
@@ -103,7 +90,7 @@ module.exports = Views.Control.extend({
     var cleared = this.clearKeywordFromInput();
 
     if (cleared) {
-      this.trigger('filter:deactivate');
+      this.state.remove(this.group);
     }
 
   },
@@ -117,10 +104,23 @@ module.exports = Views.Control.extend({
 
     if (!q) return;
 
-    this.trigger('filter:activate:replace', encodeURIComponent(q));
+    this.keyword = encodeURIComponent(q);
+    this.state.replace(this.group, this.keyword);
+  },
+
+  activateFilter: function () {
 
     this.clearButton.addClass('show');
     this.searchButton.removeClass('show');
+
+  },
+
+  deactivateFilter: function () {
+
+    this.keyword = null;
+    this.input.val('');
+    this.clearButton.removeClass('show');
+    this.searchButton.addClass('show');
 
   }
 

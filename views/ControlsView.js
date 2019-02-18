@@ -6,6 +6,7 @@ var Backbone = require('../shims/backbone');
 var Cover = require('../lib/cover');
 
 var Views = {
+  ActiveFilters: require('./active-filters/ActiveFiltersView'),
   FilterSets: {
     checkbox: require('./controls/CheckboxSetView'),
     daterange: require('./controls/DateRangeSetView'),
@@ -24,6 +25,11 @@ module.exports = Backbone.View.extend({
 
     this.cover = new Cover(this.$el);
     this.state = options.state;
+
+    this.listenTo(this.state, 'state:filter:add', this.maybeSendToPageOne);
+    this.listenTo(this.state, 'state:filter:remove', this.maybeSendToPageOne);
+    this.listenTo(this.state, 'state:filter:replace', this.maybeSendToPageOne);
+
     this.render();
 
   },
@@ -44,6 +50,7 @@ module.exports = Backbone.View.extend({
   clearFilters: function (e) {
 
     this.state.reset();
+    this.activeFilters.removeAll();
 
   },
 
@@ -58,32 +65,21 @@ module.exports = Backbone.View.extend({
 
       if (Views.FilterSets[type]) {
 
-        var view = new Views.FilterSets[type]({
+        new Views.FilterSets[type]({
           el: group,
           state: self.state
-        });
-
-        self.listenTo(view, 'filter:activate:add', function (group, slug) {
-          self.trigger('filter:activate:add', group, slug);
-          self.state.add(group, slug);
-          self.maybeSendToPageOne(group, self.state);
-        });
-
-        self.listenTo(view, 'filter:activate:replace', function (group, slug) {
-          self.trigger('filter:activate:replace', group, slug);
-          self.state.replace(group, slug);
-          self.maybeSendToPageOne(group, self.state);
-        });
-
-        self.listenTo(view, 'filter:deactivate', function (group, slug) {
-          self.trigger('filter:activate:deactivate', group, slug);
-          self.state.remove(group, slug);
-          self.maybeSendToPageOne(group, self.state);
         });
 
       }
 
     });
+
+  },
+
+  renderActiveFilters: function () {
+
+    this.activeFilters = new Views.ActiveFilters({ state: this.state });
+    this.$el.prepend(this.activeFilters.render().el);
 
   },
 
@@ -93,14 +89,10 @@ module.exports = Backbone.View.extend({
    * @param  {string} group Filter group
    * @return null
    */
-  maybeSendToPageOne: function (group, state) {
-
-    if (group === 'pg') {
-      return;
-    }
+  maybeSendToPageOne: function (group) {
 
     if (group !== 'pg') {
-      state.remove('pg');
+      this.state.remove('pg');
     }
 
   },
@@ -120,6 +112,7 @@ module.exports = Backbone.View.extend({
     this.form = this.$el.find('form');
 
     this.setupFormToggle();
+    this.renderActiveFilters();
     this.renderForm();
 
     return this;

@@ -1,12 +1,11 @@
 /* global require: false */
 /* global module: false */
 
-var $ = require("../shims/jquery");
 var Backbone = require("../shims/backbone");
 
 module.exports = Backbone.View.extend({
 
-  initialize: function (options) {
+  initialize: function () {
 
     this.state = {};
 
@@ -15,12 +14,6 @@ module.exports = Backbone.View.extend({
   ready: function () {
 
     this.state = this.deserializeQueryString();
-
-  },
-
-  getState: function () {
-
-    return this.state;
 
   },
 
@@ -34,9 +27,8 @@ module.exports = Backbone.View.extend({
     if (!querystring) return {};
 
     var state = {};
-    var groups = [];
 
-    groups = querystring.split("&");
+    var groups = querystring.split("&");
 
     groups.forEach(function(group) {
       var pair = group.split("=");
@@ -73,7 +65,10 @@ module.exports = Backbone.View.extend({
     }
 
     this.state[group].push(slug);
+
     this.trigger('state:change', this.state);
+    this.trigger('state:filter:add', group, slug);
+    this.trigger('state:filter:add:' + group + ':' + slug);
     this.setQueryString();
 
   },
@@ -112,6 +107,12 @@ module.exports = Backbone.View.extend({
     }
 
     this.trigger('state:change', this.state);
+    this.trigger('state:filter:remove', group, slug);
+    this.trigger('state:filter:remove:' + group, group, slug);
+    if (slug) {
+      this.trigger('state:filter:remove:' + group + ':' + slug);
+    }
+
     this.setQueryString();
 
   },
@@ -121,6 +122,8 @@ module.exports = Backbone.View.extend({
     this.state[group] = [slug];
 
     this.trigger('state:change', this.state);
+    this.trigger('state:filter:replace', group, slug);
+    this.trigger('state:filter:replace:' + group, group, slug);
     this.setQueryString();
 
   },
