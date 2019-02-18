@@ -18,7 +18,8 @@ module.exports = Views.Control.extend({
 
     Views.Control.prototype.initialize.call(this, options);
 
-    this.value = this.$el.find('> .input-label-group input').val();
+    this.input = this.$el.find('> .input-label-group input');
+    this.value = this.input.val();
 
     this.listenTo(this.state, 'state:filter:add:' + this.group + ':' + this.slug, this.activateFilter);
     this.listenTo(this.state, 'state:filter:remove:' + this.group + ':' + this.slug, this.deactivateFilter);
@@ -51,7 +52,7 @@ module.exports = Views.Control.extend({
 
   onChange: function (e) {
 
-    if ($(e.target).prop("checked")) {
+    if (this.input.prop("checked")) {
       this.state.add(this.group, this.value);
     } else {
       this.state.remove(this.group, this.value);
