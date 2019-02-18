@@ -21,8 +21,8 @@ module.exports = Views.Control.extend({
     this.input = this.$el.find('> .input-label-group input');
     this.value = this.input.val();
 
-    this.listenTo(this.state, 'state:filter:add:' + this.group + ':' + this.slug, this.activateFilter);
-    this.listenTo(this.state, 'state:filter:remove:' + this.group + ':' + this.slug, this.deactivateFilter);
+    this.listenTo(this.state, 'state:filter:add:' + this.group + ':' + this.value, this.activateFilter);
+    this.listenTo(this.state, 'state:filter:remove:' + this.group + ':' + this.value, this.deactivateFilter);
 
     this.toggleIcon = this.$el.find('.toggle-expand i');
     this.children = this.$el.find('.child-filters');
