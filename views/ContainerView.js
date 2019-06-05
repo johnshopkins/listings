@@ -20,6 +20,7 @@ module.exports = Backbone.View.extend({
     this.cover = new Cover(this.$el);
     this.state = options.state;
     this.fetcher = new options.fetcher();
+    this.offset = options.offset || 0;
 
     this.items = new Views.Items({
       el: this.$el.find('.items'),
@@ -124,7 +125,7 @@ module.exports = Backbone.View.extend({
 
       // scroll the user back to the top
       $('html, body').animate({
-        scrollTop: this.$el.offset().top
+        scrollTop: this.$el.offset().top - this.offset
       }, speed, 'swing', function () {
         // note: this callback will fire twice due to being called on two elements
         defered.resolve();

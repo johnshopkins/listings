@@ -26,6 +26,8 @@ module.exports = Backbone.View.extend({
     this.cover = new Cover(this.$el);
     this.state = options.state;
 
+    this.groupActiveFilters = options.groupActiveFilters;
+
     this.listenTo(this.state, 'state:filter:add', this.maybeSendToPageOne);
     this.listenTo(this.state, 'state:filter:remove', this.maybeSendToPageOne);
     this.listenTo(this.state, 'state:filter:replace', this.maybeSendToPageOne);
@@ -50,7 +52,10 @@ module.exports = Backbone.View.extend({
   clearFilters: function (e) {
 
     this.state.reset();
-    this.activeFilters.removeAll();
+
+    if (this.groupActiveFilters) {
+      this.activeFilters.removeAll();
+    }
 
   },
 
@@ -112,8 +117,11 @@ module.exports = Backbone.View.extend({
     this.form = this.$el.find('form');
 
     this.setupFormToggle();
-    this.renderActiveFilters();
     this.renderForm();
+
+    if (this.groupActiveFilters) {
+      this.renderActiveFilters();
+    }
 
     return this;
 

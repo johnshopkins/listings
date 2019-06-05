@@ -104,8 +104,8 @@ module.exports = Views.Control.extend({
 
     if (!q) return;
 
-    this.keyword = encodeURIComponent(q);
-    this.state.replace(this.group, this.keyword);
+    var keyword = encodeURIComponent(q);
+    this.state.replace(this.group, keyword);
   },
 
   activateFilter: function () {
@@ -117,7 +117,6 @@ module.exports = Views.Control.extend({
 
   deactivateFilter: function () {
 
-    this.keyword = null;
     this.input.val('');
     this.clearButton.removeClass('show');
     this.searchButton.addClass('show');

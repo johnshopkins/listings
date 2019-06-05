@@ -16,12 +16,14 @@ module.exports = Backbone.View.extend({
 
     this.onFilterAdd = typeof options.onFilterAdd === 'function' ? options.onFilterAdd : function () {};
     this.onFilterRemove = typeof options.onFilterRemove === 'function' ? options.onFilterRemove : function () {};
+    this.groupActiveFilters = typeof options.groupActiveFilters === 'boolean' ? options.groupActiveFilters : false;
 
     var state = new Views.State();
     state.ready();
 
     var controls = new Views.Controls({
       el: options.controls,
+      groupActiveFilters: this.groupActiveFilters,
       state: state
     });
 
@@ -29,6 +31,7 @@ module.exports = Backbone.View.extend({
       el: options.container,
       fetcher: options.fetcher,
       models: options.models,
+      offset: options.offset,
       state: state,
       views: options.views
     });
