@@ -2,9 +2,9 @@
 /* global module: false */
 
 var $ = require('../shims/jquery');
-var _ = require('../shims/underscore');
 var Backbone = require('../shims/backbone');
 var Cover = require('../lib/cover');
+var debounce = require('lodash.debounce');
 
 var Views = {
   Error: require('./ErrorView'),
@@ -40,7 +40,7 @@ module.exports = Backbone.View.extend({
       el: this.$el.find('.error')
     });
 
-    this.listenTo(this.state, 'state:change', _.debounce(this.fetchData.bind(this), 200, false));
+    this.listenTo(this.state, 'state:change', debounce(this.fetchData.bind(this), 200, false));
 
     this.render();
 
