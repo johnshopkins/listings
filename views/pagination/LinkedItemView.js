@@ -56,15 +56,15 @@ module.exports = Views.Pagination.extend({
   generateUrl: function (page, activeFilters) {
 
     var querystring = '?pg=' + page;
-
-    if (activeFilters.length > 0) {
+    
+    if (Object.keys(activeFilters).length > 0) {
 
       var queryParts = [];
 
       $.each(activeFilters, function (key, value) {
         queryParts.push(key + '=' + value.join(','));
       });
-
+      
       querystring = querystring + '&' + queryParts.join('&');
 
     }
@@ -74,7 +74,6 @@ module.exports = Views.Pagination.extend({
   },
 
   render: function () {
-
     this.$el.attr('href', this.generateUrl(this.model.get('num'), this.model.get('activeFilters')));
     Views.Pagination.prototype.render.call(this);
 
