@@ -22,6 +22,7 @@ module.exports = Views.Control.extend({
     Views.Control.prototype.initialize.call(this, options);
 
     this.$el.find('input').rangepicker();
+    this.defaultValue = this.$el.find('input').data('defaultValue') || '';
 
     this.listenTo(this.state, 'state:reset', this.deactivate.bind(this));
 
@@ -30,7 +31,7 @@ module.exports = Views.Control.extend({
   deactivate: function () {
 
     this.trigger('filter:deactivate', this.activeFilter);
-    this.$el.find('input').val('');
+    this.$el.find('input').val(this.defaultValue);
     this.$el.removeClass('active');
 
   },
