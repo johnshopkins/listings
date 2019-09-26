@@ -3,6 +3,7 @@
   "version": "0.4.7",
   "main": "index.js",
   "dependencies": {
-    "lodash.debounce": "^4.0.8"
+    "lodash.debounce": "^4.0.8",
+    "window-resize-watcher": "git+ssh://git@github.com/johnshopkins/window-resize-watcher.git#v0.1.1"
   }
 }
