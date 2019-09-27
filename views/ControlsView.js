@@ -5,8 +5,8 @@ var $ = require('../shims/jquery');
 var Backbone = require('../shims/backbone');
 var Cover = require('../lib/cover');
 
-const breakpoints = require('breakpoints');
-const WindowResizeWatcher = require('window-resize-watcher');
+var breakpoints = require('breakpoints');
+var WindowResizeWatcher = require('window-resize-watcher');
 
 var Views = {
   FilterSets: {
@@ -30,7 +30,7 @@ module.exports = Backbone.View.extend({
     this.cover = new Cover(this.$el);
     this.state = options.state;
 
-    const resizer = new WindowResizeWatcher(vent, 'academics');
+    var resizer = new WindowResizeWatcher(vent, 'academics');
     $(window).on('resize', resizer.handleResize.bind(resizer));
 
     this.setFilterStyle();
@@ -43,7 +43,7 @@ module.exports = Backbone.View.extend({
   setFilterStyle: function (e) {
 
     // mobile filters are only triggered via width
-    const newStyle = (breakpoints.getWidth() === 'hand' || breakpoints.getWidth() === 'lap') ? 'mobile' : 'nonmobile';
+    var newStyle = (breakpoints.getWidth() === 'hand' || breakpoints.getWidth() === 'lap') ? 'mobile' : 'nonmobile';
 
     if (this.filterStyle === null) {
       // set initial style
