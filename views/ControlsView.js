@@ -5,6 +5,9 @@ var $ = require('../shims/jquery');
 var Backbone = require('../shims/backbone');
 var Cover = require('../lib/cover');
 
+const breakpoints = require('breakpoints');
+const WindowResizeWatcher = require('window-resize-watcher');
+
 var Views = {
   FilterSets: {
     checkbox: require('./controls/CheckboxSetView'),
@@ -16,6 +19,8 @@ var Views = {
 
 module.exports = Backbone.View.extend({
 
+  filterStyle: null,
+
   events: {
     'reset form': 'clearFilters'
   },
@@ -24,7 +29,46 @@ module.exports = Backbone.View.extend({
 
     this.cover = new Cover(this.$el);
     this.state = options.state;
+
+    const resizer = new WindowResizeWatcher(vent, 'academics');
+    $(window).on('resize', resizer.handleResize.bind(resizer));
+
+    this.setFilterStyle();
+    this.listenTo(vent, 'academics:winresize:done', this.setFilterStyle);
+
     this.render();
+
+  },
+
+  setFilterStyle: function (e) {
+
+    // mobile filters are only triggered via width
+    const newStyle = (breakpoints.getWidth() === 'hand' || breakpoints.getWidth() === 'lap') ? 'mobile' : 'nonmobile';
+
+    if (this.filterStyle === null) {
+      // set initial style
+      this.filterStyle = newStyle;
+      return;
+    }
+
+    if (this.filterStyle !== newStyle) {
+
+      this.filterStyle = newStyle;    
+      
+      if (this.$el.find($(':focus')).length === 0 || this.filterStyle === 'nonmobile') {
+        // user is not focused inside the filters OR going from mobile to nonmobile; do nothing
+        return;
+      }
+
+      // if the open filters button is visible, that means the filters are
+      // closed and we should point the user to open button. if the filters
+      // are already open, keep the focus where it is.
+      var openFiltersButton = this.$el.find('.display-nav button.open');
+      if (openFiltersButton.is(':visible')) {
+        openFiltersButton.focus();
+      }
+
+    }
 
   },
 
