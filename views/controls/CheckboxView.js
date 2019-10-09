@@ -12,7 +12,8 @@ module.exports = Views.Control.extend({
 
   events: {
     'change > .input-label-group input': 'onChange',
-    'click > .toggle-expand': 'toggleExpand'
+    'click > .toggle-expand': 'toggleExpand',
+    'click button.close': 'toggleExpand'
   },
 
   initialize: function (options) {
