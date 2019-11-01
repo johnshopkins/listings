@@ -30,11 +30,10 @@ module.exports = Backbone.View.extend({
     this.cover = new Cover(this.$el);
     this.state = options.state;
 
-    var resizer = new WindowResizeWatcher(vent, 'academics');
-    $(window).on('resize', resizer.handleResize.bind(resizer));
+    new WindowResizeWatcher('academics');
 
     this.setFilterStyle();
-    this.listenTo(vent, 'academics:winresize:done', this.setFilterStyle);
+    window.addEventListener('academics:winresize:done', this.setFilterStyle.bind(this));
 
     this.render();
 

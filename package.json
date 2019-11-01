@@ -5,6 +5,6 @@
   "dependencies": {
     "breakpoints": "git+ssh://git@github.com/johnshopkins/breakpoints.git#v0.2",
     "lodash.debounce": "^4.0.8",
-    "window-resize-watcher": "git+ssh://git@github.com/johnshopkins/window-resize-watcher.git#v0.2.1"
+    "window-resize-watcher": "git+ssh://git@github.com/johnshopkins/window-resize-watcher.git#v1.0"
   }
 }
