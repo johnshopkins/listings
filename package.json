@@ -3,7 +3,7 @@
   "version": "0.7.0",
   "main": "index.js",
   "dependencies": {
-    "breakpoints": "git+ssh://git@github.com/johnshopkins/breakpoints.git#v0.2",
+    "breakpoints": "git+ssh://git@github.com/johnshopkins/breakpoints.git#v1.0",
     "lodash.debounce": "^4.0.8",
     "window-resize-watcher": "git+ssh://git@github.com/johnshopkins/window-resize-watcher.git#v1.0"
   }
