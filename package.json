@@ -1,6 +1,6 @@
 {
   "name": "listings",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "main": "index.js",
   "dependencies": {
     "breakpoints": "git+ssh://git@github.com/johnshopkins/breakpoints.git#v1.0.1",
