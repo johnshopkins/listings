@@ -1,10 +1,10 @@
 {
   "name": "listings",
-  "version": "0.7.3",
+  "version": "0.7.5",
   "main": "index.js",
   "dependencies": {
     "breakpoints": "git+ssh://git@github.com/johnshopkins/breakpoints.git#v1.0.1",
     "lodash.debounce": "^4.0.8",
-    "window-resize-watcher": "git+ssh://git@github.com/johnshopkins/window-resize-watcher.git#v1.1.1"
+    "window-resize-watcher": "git+ssh://git@github.com/johnshopkins/window-resize-watcher.git#v1.1.2"
   }
 }
