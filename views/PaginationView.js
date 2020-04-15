@@ -1,9 +1,6 @@
 /* global require: false */
 /* global module: false */
 
-var $ = require("../shims/jquery");
-var Backbone = require("../shims/backbone");
-
 var Views = {
   LinkedItem: require('./pagination/LinkedItemView'),
   Item: require('./pagination/ItemView')

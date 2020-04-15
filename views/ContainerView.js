@@ -1,8 +1,6 @@
 /* global require: false */
 /* global module: false */
 
-var $ = require('../shims/jquery');
-var Backbone = require('../shims/backbone');
 var Cover = require('../lib/cover');
 var debounce = require('lodash.debounce');
 

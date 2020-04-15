@@ -2,8 +2,6 @@
 /* global module: false */
 /* global dataLayer: false */
 
-var $ = require('../../shims/jquery');
-var Backbone = require('../../shims/backbone');
 require('../../lib/jquery.rangepicker.js');
 
 var Views = {
