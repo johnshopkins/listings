@@ -2,7 +2,7 @@
 /* global module: false */
 /* global dataLayer: false */
 
-require('../../lib/jquery.rangepicker.js');
+const flatpickr = require('flatpickr');
 
 var Views = {
   Control: require('./ControlView')
@@ -11,35 +11,63 @@ var Views = {
 module.exports = Views.Control.extend({
 
   events: {
-    'change > input': 'onChange',
-    'click .clear': 'deactivate'
+    'click .clear': 'deactivate',
+    'click .fa-calendar': 'openCalendar'
   },
 
   initialize: function (options) {
 
     Views.Control.prototype.initialize.call(this, options);
 
-    this.$el.find('input').rangepicker();
-    this.defaultValue = this.$el.find('input').data('defaultValue') || '';
+    this.datepicker = flatpickr(this.$el.find('input').get(0), this.getDatepickerConfig());
 
     this.listenTo(this.state, 'state:reset', this.deactivate.bind(this));
 
   },
 
+  openCalendar: function () {
+    this.datepicker.open()
+  },
+
+  getDatepickerConfig: function () {
+    const config = {
+      mode: 'range',
+      minDate: 'today',
+      altInput: true,
+      altFormat: 'n/j/y',
+      dateFormat: 'Y-m-d',
+      onChange: this.onChange.bind(this),
+    };
+
+    const initialValue = this.$el.find('input').data('value');
+    if (initialValue) {
+      config.defaultDate = initialValue.split(',');
+    }
+
+    return config;
+  },
+
   deactivate: function () {
 
+    this.datepicker.clear();
+
     this.trigger('filter:deactivate', this.activeFilter);
-    this.$el.find('input').val(this.defaultValue);
     this.$el.removeClass('active');
 
   },
 
-  onChange: function (e) {
+  onChange: function (selectedDates, dateStr, instance) {
 
-    var target = $(e.target);
-    var filter = target.val()
-      .replace(/\s*-\s*/g, ',')
-      .replace(/\//g, '-');
+    instance.element.value = dateStr.replace('to', '-');
+
+    if (selectedDates.length < 2) {
+      // wait for the user to select the end date
+      return;
+    }
+
+    const filter = selectedDates.map(date => {
+      return instance.formatDate(date, 'Y-m-d')
+    }).join(',');
 
     if (filter) {
       this.trigger('filter:activate:replace', filter);
