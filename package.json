@@ -4,6 +4,7 @@
   "main": "index.js",
   "dependencies": {
     "breakpoints": "git+ssh://git@github.com/johnshopkins/breakpoints.git#v1.0.1",
+    "flatpickr": "^4.6.13",
     "lodash.debounce": "^4.0.8",
     "window-resize-watcher": "git+ssh://git@github.com/johnshopkins/window-resize-watcher.git#v1.2.0"
   }
