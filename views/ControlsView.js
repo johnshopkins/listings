@@ -9,6 +9,7 @@ var WindowResizeWatcher = require('window-resize-watcher');
 var Views = {
   FilterSets: {
     checkbox: require('./controls/CheckboxSetView'),
+    date: require('./controls/DateSetView'),
     daterange: require('./controls/DateRangeSetView'),
     search: require('./controls/SearchSetView')
   },
