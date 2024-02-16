@@ -34,8 +34,6 @@ module.exports = Views.Control.extend({
       inline: true,
       maxDate: 'today',
       minDate: new Date().fp_incr(-30), // 30 days ago
-      altInput: true,
-      altFormat: 'n/j/y',
       dateFormat: 'Y-m-d',
       disable: [
         (date) => date.getDay() === 6 || date.getDay() === 0
