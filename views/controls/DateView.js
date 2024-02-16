@@ -31,6 +31,7 @@ module.exports = Views.Control.extend({
 
   getDatepickerConfig: function () {
     const config = {
+      inline: true,
       maxDate: 'today',
       minDate: new Date().fp_incr(-30), // 30 days ago
       altInput: true,
