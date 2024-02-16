@@ -31,10 +31,9 @@ module.exports = Views.Control.extend({
 
   getDatepickerConfig: function () {
     const config = {
+      inline: true,
       maxDate: 'today',
       minDate: new Date().fp_incr(-30), // 30 days ago
-      altInput: true,
-      altFormat: 'n/j/y',
       dateFormat: 'Y-m-d',
       disable: [
         (date) => date.getDay() === 6 || date.getDay() === 0
@@ -44,7 +43,8 @@ module.exports = Views.Control.extend({
 
     const initialValue = this.$el.find('input').data('value');
     if (initialValue) {
-      config.defaultDate = initialValue.split(',');
+      config.defaultDate = initialValue;
+      this.activeFilter = initialValue;
     }
 
     return config;
@@ -62,6 +62,10 @@ module.exports = Views.Control.extend({
   onChange: function (selectedDates, dateStr, instance) {
 
     const filter = instance.formatDate(selectedDates[0], 'Y-m-d');
+
+    if (filter === this.activeFilter) {
+      return;
+    }
 
     if (filter) {
       this.trigger('filter:activate:replace', filter);
