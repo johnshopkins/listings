@@ -43,7 +43,8 @@ module.exports = Views.Control.extend({
 
     const initialValue = this.$el.find('input').data('value');
     if (initialValue) {
-      config.defaultDate = initialValue.split(',');
+      config.defaultDate = initialValue;
+      this.activeFilter = initialValue;
     }
 
     return config;
@@ -61,6 +62,10 @@ module.exports = Views.Control.extend({
   onChange: function (selectedDates, dateStr, instance) {
 
     const filter = instance.formatDate(selectedDates[0], 'Y-m-d');
+
+    if (filter === this.activeFilter) {
+      return;
+    }
 
     if (filter) {
       this.trigger('filter:activate:replace', filter);
